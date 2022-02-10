@@ -18,15 +18,13 @@ test.before(() => {
 	get = sinon.stub(axios, 'get')
 	process.env.CHANNEL_ID = 'dummy-channel-id'
 	process.env.ACCESS_TOKEN = 'dummy-access-token'
-	youtubeDataApiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=${process.env.ACCESS_TOKEN}`
+	youtubeDataApiUrl = `https://discordapp.com/api/users/@me/guilds`
 })
 
 test('Successful authentication.', async (t) => {
-	get.withArgs(youtubeDataApiUrl).resolves({
+	get.withArgs(youtubeDataApiUrl, { headers: { Authorization: "Bearer " + process.env.ACCESS_TOKEN } }).resolves({
 		status: 200,
-		data: {
-			items: [{ id: process.env.CHANNEL_ID }],
-		},
+		data: [{ id: process.env.CHANNEL_ID, owner: true }],
 	})
 	const res = await authorize({
 		message: process.env.CHANNEL_ID,
@@ -36,11 +34,9 @@ test('Successful authentication.', async (t) => {
 })
 
 test('If the user does not send his channel id, the authentication fails.', async (t) => {
-	get.withArgs(youtubeDataApiUrl).resolves({
+	get.withArgs(youtubeDataApiUrl, { headers: { Authorization: "Bearer " + process.env.ACCESS_TOKEN } }).resolves({
 		status: 200,
-		data: {
-			items: [{ id: process.env.CHANNEL_ID }],
-		},
+		data: [{ id: process.env.CHANNEL_ID, owner: true }],
 	})
 	const res = await authorize({
 		message: 'wrong-dummy-channel-id',
@@ -51,25 +47,11 @@ test('If the user does not send his channel id, the authentication fails.', asyn
 
 test('If the access token does not exist, the authentication fails', async (t) => {
 	const wrongToken = 'wrong-dummy-access-token'
-	youtubeDataApiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=${wrongToken}`
-	get.withArgs(youtubeDataApiUrl).resolves({
+	get.withArgs(youtubeDataApiUrl, { headers: { Authorization: "Bearer " + wrongToken } }).resolves({
 		status: 401,
 		data: {
-			error: {
-				code: 401,
-				message:
-					'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
-				errors: [
-					{
-						message: 'Invalid Credentials',
-						domain: 'global',
-						reason: 'authError',
-						location: 'Authorization',
-						locationType: 'header',
-					},
-				],
-				status: 'UNAUTHENTICATED',
-			},
+			message: '401: Unauthorized',
+			code: 0,
 		},
 	})
 	const res = await authorize({
