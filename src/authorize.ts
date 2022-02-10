@@ -6,21 +6,20 @@ export const authorize: FunctionAuthorizer = async ({ message, secret }) => {
 	return postViewerPermission(message, secret)
 }
 
-type YoutubeAPIResponse = Array<{
-	id: string,
-	owner: boolean,
+type DiscordAPIResponse = ReadonlyArray<{
+	readonly id: string
+	readonly owner: boolean
 }>
 
 async function postViewerPermission(
-	channelId: string,
+	guildId: string,
 	token: string
 ): Promise<boolean> {
 	const res = await post(token)
-	let result = !Array.isArray(res)
+	const result = !Array.isArray(res)
 		? []
-		:
-		res.filter(function (value: { id: string }) {
-			return value.id === channelId;
+		: res.filter(function (value: { readonly id: string }) {
+			return value.id === guildId
 		})
 
 	return res instanceof Error
@@ -32,10 +31,10 @@ async function postViewerPermission(
 			: false
 }
 
-async function post(token: string): Promise<YoutubeAPIResponse | Error> {
-	const youtubeDataApiUrl = `https://discordapp.com/api/users/@me/guilds`
+async function post(token: string): Promise<DiscordAPIResponse | Error> {
+	const discordAPIUrl = `https://discordapp.com/api/users/@me/guilds`
 	return axios
-		.get(youtubeDataApiUrl, { headers: { Authorization: "Bearer " + token } })
+		.get(discordAPIUrl, { headers: { Authorization: 'Bearer ' + token } })
 		.then((response) => response.data)
 		.catch((err: Error) => err)
 }
