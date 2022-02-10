@@ -19,16 +19,16 @@ async function postViewerPermission(
 	const result = !Array.isArray(res)
 		? []
 		: res.filter(function (value: { readonly id: string }) {
-			return value.id === guildId
-		})
+				return value.id === guildId
+		  })
 
 	return res instanceof Error
 		? false
 		: result.length > 0
-			? result[0].owner === true
-				? true
-				: false
+		? result[0].owner === true
+			? true
 			: false
+		: false
 }
 
 async function post(token: string): Promise<DiscordAPIResponse | Error> {
