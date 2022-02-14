@@ -1,7 +1,7 @@
 {
-	"name": "khaos-youtube-market",
+	"name": "khaos-discord-market",
 	"private": true,
-	"description": "Khaos Functions for YouTube Market",
+	"description": "Khaos Functions for Discord Market",
 	"scripts": {
 		"test": "ava",
 		"build": "tsc",
@@ -65,13 +65,13 @@
 	"main": "index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/dev-protocol/khaos-youtube-market.git"
+		"url": "git+https://github.com/dev-protocol/khaos-discord-market.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/dev-protocol/khaos-youtube-market/issues"
+		"url": "https://github.com/dev-protocol/khaos-discord-market/issues"
 	},
-	"homepage": "https://github.com/dev-protocol/khaos-youtube-market#readme"
+	"homepage": "https://github.com/dev-protocol/khaos-discord-market#readme"
 }
