@@ -16,7 +16,7 @@ let discordAPIUrl: string
 
 test.before(() => {
 	get = sinon.stub(axios, 'get')
-	process.env.GUILD_ID = 'dummy-channel-id'
+	process.env.GUILD_ID = 'dummy-guild-id'
 	process.env.ACCESS_TOKEN = 'dummy-access-token'
 	discordAPIUrl = `https://discordapp.com/api/users/@me/guilds`
 })
@@ -47,7 +47,7 @@ test('If the user does not send his channel id, the authentication fails.', asyn
 			data: [{ id: process.env.GUILD_ID, owner: true }],
 		})
 	const res = await authorize({
-		message: 'wrong-dummy-channel-id',
+		message: 'wrong-dummy-guild-id',
 		secret: process.env.ACCESS_TOKEN,
 	} as any)
 	t.false(res)
