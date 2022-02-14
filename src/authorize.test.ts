@@ -12,38 +12,42 @@ let get: sinon.SinonStub<
 	Promise<unknown>
 >
 
-let youtubeDataApiUrl: string
+let discordAPIUrl: string
 
 test.before(() => {
 	get = sinon.stub(axios, 'get')
-	process.env.CHANNEL_ID = 'dummy-channel-id'
+	process.env.GUILD_ID = 'dummy-guild-id'
 	process.env.ACCESS_TOKEN = 'dummy-access-token'
-	youtubeDataApiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=${process.env.ACCESS_TOKEN}`
+	discordAPIUrl = `https://discordapp.com/api/users/@me/guilds`
 })
 
 test('Successful authentication.', async (t) => {
-	get.withArgs(youtubeDataApiUrl).resolves({
-		status: 200,
-		data: {
-			items: [{ id: process.env.CHANNEL_ID }],
-		},
-	})
+	get
+		.withArgs(discordAPIUrl, {
+			headers: { Authorization: 'Bearer ' + process.env.ACCESS_TOKEN },
+		})
+		.resolves({
+			status: 200,
+			data: [{ id: process.env.GUILD_ID, owner: true }],
+		})
 	const res = await authorize({
-		message: process.env.CHANNEL_ID,
+		message: process.env.GUILD_ID,
 		secret: process.env.ACCESS_TOKEN,
 	} as any)
 	t.true(res)
 })
 
 test('If the user does not send his channel id, the authentication fails.', async (t) => {
-	get.withArgs(youtubeDataApiUrl).resolves({
-		status: 200,
-		data: {
-			items: [{ id: process.env.CHANNEL_ID }],
-		},
-	})
+	get
+		.withArgs(discordAPIUrl, {
+			headers: { Authorization: 'Bearer ' + process.env.ACCESS_TOKEN },
+		})
+		.resolves({
+			status: 200,
+			data: [{ id: process.env.GUILD_ID, owner: true }],
+		})
 	const res = await authorize({
-		message: 'wrong-dummy-channel-id',
+		message: 'wrong-dummy-guild-id',
 		secret: process.env.ACCESS_TOKEN,
 	} as any)
 	t.false(res)
@@ -51,29 +55,19 @@ test('If the user does not send his channel id, the authentication fails.', asyn
 
 test('If the access token does not exist, the authentication fails', async (t) => {
 	const wrongToken = 'wrong-dummy-access-token'
-	youtubeDataApiUrl = `https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&access_token=${wrongToken}`
-	get.withArgs(youtubeDataApiUrl).resolves({
-		status: 401,
-		data: {
-			error: {
-				code: 401,
-				message:
-					'Request had invalid authentication credentials. Expected OAuth 2 access token, login cookie or other valid authentication credential. See https://developers.google.com/identity/sign-in/web/devconsole-project.',
-				errors: [
-					{
-						message: 'Invalid Credentials',
-						domain: 'global',
-						reason: 'authError',
-						location: 'Authorization',
-						locationType: 'header',
-					},
-				],
-				status: 'UNAUTHENTICATED',
+	get
+		.withArgs(discordAPIUrl, {
+			headers: { Authorization: 'Bearer ' + wrongToken },
+		})
+		.resolves({
+			status: 401,
+			data: {
+				message: '401: Unauthorized',
+				code: 0,
 			},
-		},
-	})
+		})
 	const res = await authorize({
-		message: process.env.CHANNEL_ID,
+		message: process.env.GUILD_ID,
 		secret: 'wrong-dummy-access-token',
 	} as any)
 	t.false(res)
