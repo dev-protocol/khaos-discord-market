@@ -11,13 +11,13 @@ export const oraclize: FunctionOraclizer = async ({
 
 	return signatureOptions?.message && test1 && test2
 		? {
-			message: signatureOptions.message,
-			status: 0,
-			statusMessage: 'success',
-		}
+				message: signatureOptions.message,
+				status: 0,
+				statusMessage: 'success',
+		  }
 		: {
-			message: signatureOptions?.message ?? 'empty',
-			status: 2,
-			statusMessage: `error: test1 = ${test1}, test2 = ${test2}`,
-		}
+				message: signatureOptions?.message ?? 'empty',
+				status: 2,
+				statusMessage: `error: test1 = ${test1}, test2 = ${test2}`,
+		  }
 }
