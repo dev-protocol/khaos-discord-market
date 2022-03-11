@@ -23,7 +23,7 @@
 		"bent": "7.3.12",
 		"dotenv": "16.0.0",
 		"ethers": "5.6.0",
-		"node-fetch": "3.2.2",
+		"node-fetch": "3.2.3",
 		"ramda": "0.28.0"
 	},
 	"devDependencies": {
