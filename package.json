@@ -22,7 +22,7 @@
 		"@types/sinon": "10.0.11",
 		"bent": "7.3.12",
 		"dotenv": "16.0.1",
-		"ethers": "5.6.7",
+		"ethers": "5.6.8",
 		"node-fetch": "3.2.4",
 		"ramda": "0.28.0"
 	},
