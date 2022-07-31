@@ -39,7 +39,7 @@
 		"eslint-config-prettier": "8.5.0",
 		"eslint-plugin-functional": "4.2.2",
 		"esm": "3.2.25",
-		"husky": "7.0.4",
+		"husky": "8.0.1",
 		"prettier": "2.7.1",
 		"rimraf": "3.0.2",
 		"rollup": "2.77.2",
