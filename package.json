@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@devprotocol/khaos-core": "1.6.0",
-		"@rollup/plugin-json": "4.1.0",
+		"@rollup/plugin-json": "5.0.2",
 		"@types/sinon": "10.0.13",
 		"bent": "7.3.12",
 		"dotenv": "16.0.3",
