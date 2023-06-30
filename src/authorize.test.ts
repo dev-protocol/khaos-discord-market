@@ -28,7 +28,7 @@ test('Successful authentication.', async (t) => {
 		})
 		.resolves({
 			status: 200,
-			data: [{ id: process.env.GUILD_ID, owner: true }],
+			data: [{ id: process.env.GUILD_ID, permissions: 8 }],
 		})
 	const res = await authorize({
 		message: process.env.GUILD_ID,
@@ -44,10 +44,26 @@ test('If the user does not send his channel id, the authentication fails.', asyn
 		})
 		.resolves({
 			status: 200,
-			data: [{ id: process.env.GUILD_ID, owner: true }],
+			data: [{ id: process.env.GUILD_ID, permissions: 8 }],
 		})
 	const res = await authorize({
 		message: 'wrong-dummy-guild-id',
+		secret: process.env.ACCESS_TOKEN,
+	} as any)
+	t.false(res)
+})
+
+test('If the user send a channel id that has no sufficient permissions, the authentication fails.', async (t) => {
+	get
+		.withArgs(discordAPIUrl, {
+			headers: { Authorization: 'Bearer ' + process.env.ACCESS_TOKEN },
+		})
+		.resolves({
+			status: 200,
+			data: [{ id: process.env.GUILD_ID, permissions: 1099511627767 }],
+		})
+	const res = await authorize({
+		message: process.env.GUILD_ID,
 		secret: process.env.ACCESS_TOKEN,
 	} as any)
 	t.false(res)

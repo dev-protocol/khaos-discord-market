@@ -2,6 +2,8 @@ import axios from 'axios'
 import { FunctionAuthorizer } from '@devprotocol/khaos-core'
 import { unless } from 'ramda'
 
+const REQUIRED_PERMISSIONS = 8 // Administrator
+
 export const authorize: FunctionAuthorizer = async ({ message, secret }) => {
 	return postViewerPermission(message, secret)
 }
@@ -25,7 +27,7 @@ async function postViewerPermission(
 	return res instanceof Error
 		? false
 		: result.length > 0
-		? result[0].owner === true
+		? (REQUIRED_PERMISSIONS & result[0].permissions) === REQUIRED_PERMISSIONS
 			? true
 			: false
 		: false
