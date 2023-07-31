@@ -21,7 +21,7 @@
 		"@rollup/plugin-json": "4.1.0",
 		"@types/sinon": "10.0.15",
 		"bent": "7.3.12",
-		"dotenv": "16.0.3",
+		"dotenv": "16.3.1",
 		"ethers": "5.7.2",
 		"node-fetch": "3.3.2",
 		"ramda": "0.29.0"
