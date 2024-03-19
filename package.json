@@ -11,9 +11,9 @@
 		"postbuild": "rollup -c",
 		"predeploy": "yarn build",
 		"lint": "yarn lint:eslint && yarn lint:format",
-		"lint:eslint": "eslint . --ext .ts,.js --fix",
-		"lint:format": "prettier --write '**/*.{ts,js,json,md,yml}'",
-		"deploy": "curl -X POST -F file=@bundled/index.js 'https://ipfs.infura.io:5001/api/v0/add?pin=true'",
+		"lint:eslint": "eslint . --ext .ts,.js,.mjs --fix",
+		"lint:format": "prettier --write '**/*.{ts,js,mjs,json,md,yml}'",
+		"deploy": "node ./deploy.mjs",
 		"prepare": "husky install"
 	},
 	"dependencies": {
@@ -21,13 +21,14 @@
 		"@rollup/plugin-json": "4.1.0",
 		"@types/sinon": "10.0.20",
 		"bent": "7.3.12",
-		"dotenv": "16.4.1",
+		"dotenv": "^16.4.5",
 		"ethers": "5.7.2",
 		"node-fetch": "3.3.2",
 		"ramda": "0.29.0"
 	},
 	"devDependencies": {
 		"@ava/typescript": "2.0.0",
+		"@pinata/sdk": "^2.1.0",
 		"@rollup/plugin-commonjs": "22.0.2",
 		"@rollup/plugin-node-resolve": "14.1.0",
 		"@types/node": "20.11.6",
